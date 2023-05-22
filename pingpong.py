@@ -2,6 +2,10 @@ from pygame import *
 mixer.init()
 mixer.music.load('muzyka.mp3')
 mixer.music.play()
+font.init()
+font=font.Font(None,70)
+p1=font.render('Left player wins!',True,(0,0,0))
+p2=font.render('Right player wins!',True,(0,0,0))
 class GameSprite(sprite.Sprite):
     def __init__(self,img,x,y,speed,lenght,width):
         super().__init__()
@@ -40,7 +44,7 @@ class Ball(GameSprite):
         self.v=self.speed
         self.h=self.speed
     def update(self):
-        if self.rect.y==400 or self.rect.y==5:
+        if self.rect.y==450 or self.rect.y==5:
             self.v*=-1
         if sprite.collide_rect(self,r_racket) or sprite.collide_rect(self,l_racket):
             self.h*=-1
@@ -68,4 +72,10 @@ while run:
         l_racket.update()
         ball.reset()
         ball.update()
+        if ball.rect.x==0:
+            window.blit(p2,(150,200))
+            finish=True
+        if ball.rect.x==655:
+            window.blit(p1,(150,200))
+            finish=True
     display.update()
