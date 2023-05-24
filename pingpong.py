@@ -21,9 +21,15 @@ class Player_r(GameSprite):
         super().__init__(img,x,y,speed,lenght,width)
     def update(self):
         keys_pressed=key.get_pressed()
-        if keys_pressed[K_UP] and self.rect.y>=5 and self.rect.y<=345:
+        if keys_pressed[K_UP] and self.rect.y>=5:
             self.rect.y-=self.speed
-        if keys_pressed[K_DOWN] and self.rect.y<=345 and self.rect.y>=5:
+        if keys_pressed[K_DOWN] and self.rect.y<=345:
+            self.rect.y+=self.speed
+    def update_invert(self):
+        keys_pressed=key.get_pressed()
+        if keys_pressed[K_DOWN] and self.rect.y>=5:
+            self.rect.y-=self.speed
+        if keys_pressed[K_UP] and self.rect.y<=345:
             self.rect.y+=self.speed
 class Player_l(GameSprite):
     def __init__(self,img,x,y,speed,lenght,width):
@@ -32,9 +38,15 @@ class Player_l(GameSprite):
         self.h=self.speed
     def update(self):
         keys_pressed=key.get_pressed()
-        if keys_pressed[K_w] and self.rect.y>=5 and self.rect.y<345:
+        if keys_pressed[K_w] and self.rect.y>=5:
             self.rect.y-=self.speed
-        if keys_pressed[K_s] and self.rect.y<=345 and self.rect.y>5:
+        if keys_pressed[K_s] and self.rect.y<=345:
+            self.rect.y+=self.speed
+    def update_invert(self):
+        keys_pressed=key.get_pressed()
+        if keys_pressed[K_s] and self.rect.y>=5:
+            self.rect.y-=self.speed
+        if keys_pressed[K_w] and self.rect.y<=345:
             self.rect.y+=self.speed
 r_racket=Player_r('racket.png',650,200,5,20,150)
 l_racket=Player_l('racket.png',30,200,5,20,150)
@@ -71,9 +83,13 @@ while run:
         clock.tick(fps)
         window.blit(background,(0,0))
         r_racket.reset()
-        r_racket.update()
         l_racket.reset()
-        l_racket.update()
+        if g1<7 or g2<7:
+            r_racket.update()
+            l_racket.update()
+        elif g1>=7 or g2>=7:
+            r_racket.update_invert()
+            l_racket.update_invert()
         ball1.reset()
         ball1.update()
         if ball1.rect.x<=0:
